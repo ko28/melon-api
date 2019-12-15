@@ -1,14 +1,19 @@
 """
 Simple flask api 
 """
-import flask
+import logging
+from flask import Flask, jsonify
 from scrapeMelon import getList
 
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+app = Flask(__name__)
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    app.run(threaded=True, debug=True)
+
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 @app.route('/', methods=['GET'])
 def spalsh():
