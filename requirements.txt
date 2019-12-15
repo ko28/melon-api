@@ -6,7 +6,7 @@ gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.10.3
 logger==1.4
-
+lxml==4.4.2
 MarkupSafe==1.1.1
 soupsieve==1.9.5
 Werkzeug==0.16.0
