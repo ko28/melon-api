@@ -12,6 +12,9 @@ img {
     bottom: 13px;
 }
 
+a {
+	text-decoration:none;
+}
 
 body {
     font-family: 'Rubik', sans-serif;

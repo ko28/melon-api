@@ -9,28 +9,46 @@
 <body>
   <h1> Melon Api </h1>
   <img src="{{ url_for('static', filename='melon.png')}}" width="150">
+
+  <p> Endpoints </p>
   <div class="api">
-    <button class="link">
-      <span>Live</span>
-    </button>
-    <button class="link">
-      <span>Rise</span>
-    </button>
-    <button class="link">
-      <span>Day</span>
-    </button>
-    <button class="link">
-      <span>Week</span>
-    </button>
-    <button class="link">
-      <span>Month</span>
-    </button>
+    <a href="/chart/live">
+      <button class="link">
+        <span>Live</span>
+      </button>
+    </a>
+
+    <a href="/chart/rise">
+      <button class="link">
+        <span>Rise</span>
+      </button>
+    </a>
+
+    <a href="/chart/live">
+      <button class="link">
+        <span>Day</span>
+      </button>
+    </a>
+
+    <a href="/chart/week">
+      <button class="link">
+        <span>Week</span>
+      </button>
+    </a>
+
+    <a href="/chart/month">
+      <button class="link">
+        <span>Month</span>
+      </button>
+    </a>
 
   </div>
 
-  <p>Convert top 100 Melon to Spotify
+  <p>Convert the current top 100 songs on the Melon chart to Spotify playlist
   </p>
-  <button class="learn-more">Sign in with Spotify</button>
+  <a href="/spotify">
+    <button class="learn-more">Sign in with Spotify</button>
+  </a>
 </body>
 
 </html>

@@ -7,6 +7,10 @@ https://developer.spotify.com/
 export ClientId='yourClientID'
 export ClientSecret='yourClientSecret'
 
+add flask.request.host_url + 'spotify/playlist'
+flask.request.host_url + 'spotify'
+to valid redirect link
+
 https://ko28melonapi.herokuapp.com/chart/live
 
 https://ko28melonapi.herokuapp.com/chart/rise
