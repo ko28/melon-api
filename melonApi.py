@@ -4,6 +4,7 @@ Simple flask api
 import flask
 import os
 import requests
+import json
 from scrapeMelon import getList
 from datetime import datetime
 
@@ -27,7 +28,8 @@ def getOauth():
 
 @app.route('/spotify/playlist', methods=['GET'])
 def makePlaylist():    
-    
+    #add try catch here 
+        
     # Generate access token   
     params = {
                 "grant_type":    "authorization_code",
@@ -42,7 +44,7 @@ def makePlaylist():
 
     # Get user's id =body, auth=(ClientId, ClientSecret)
     headers = {
-        "Authorization" : "Bearer " + token,
+        "Authorization" : "Bearer " +  token,
         "Content-Type" : "application/json"
     }
     userId = requests.get(url='https://api.spotify.com/v1/me', headers=headers).json()['id']
@@ -53,8 +55,13 @@ def makePlaylist():
             "public": "true",
             "description" : "Made by github.com/ko28 and generated on " + str(datetime.now())
     }
-    playlist = requests.post(url='https://api.spotify.com/v1/users/' + userId + '/playlists', headers=headers, data=params)
-    return 'https://api.spotify.com/v1/users/' + userId + '/playlists'
+    # Weird bug that requires json.dumps(params), took me a couple days to figure out :^( 
+    playlist = requests.post(url='https://api.spotify.com/v1/users/' + userId + '/playlists', data=json.dumps(params), headers=headers).json()
+
+
+    return playlist['id']
+
+
 '''
     except:
         return "Could not get token, try clearing your cookies and logging again."
