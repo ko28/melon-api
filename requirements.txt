@@ -26,7 +26,6 @@ pylint==2.4.4
 requests==2.22.0
 six==1.13.0
 soupsieve==1.9.5
-spotipy==2.4.4
 typed-ast==1.4.0
 typing-extensions==3.7.4.1
 urllib3==1.25.7

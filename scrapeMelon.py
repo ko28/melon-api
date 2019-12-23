@@ -16,7 +16,7 @@ def getList(time):
     """Generates json file of the top 100 songs + (additional metadata) on Melon
 
     Args:
-        time (str): Which chart you want, see URL dictionary 
+        time (str): Which chart you want (LIVE, RISE, DAY, WEEK, MONTH)
 
     Returns:
         json (str): Json string that contains the top 100 songs. 

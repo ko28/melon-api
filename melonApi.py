@@ -5,6 +5,7 @@ import flask
 import os
 import requests
 import json
+import spotify
 from scrapeMelon import getList
 from datetime import datetime
 
@@ -21,8 +22,8 @@ def chart(key):
     return getList(key.upper())
 
 @app.route('/spotify', methods=['GET'])
-def getOauth():
-    # Go to spotify authorization page to get authorization code, exchanged for an access token
+def getOAuthCode():
+    # Go to Spotify's authorization page to get authorization code
     return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + ClientId + 
     '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
 
@@ -31,35 +32,10 @@ def makePlaylist():
     #add try catch here 
         
     # Generate access token   
-    params = {
-                "grant_type":    "authorization_code",
-                "client_id" :    ClientId,
-                "client_secret": ClientSecret,
-                "code":          flask.request.args.get('code'),
-                "redirect_uri":  flask.request.host_url + 'spotify/playlist'
-            }
-            # "redirect_uri": flask.request.host_url + 'spotify/playlist'
-    token = requests.post(url='https://accounts.spotify.com/api/token', data=params).json()['access_token']
-    
-
-    # Get user's id =body, auth=(ClientId, ClientSecret)
-    headers = {
-        "Authorization" : "Bearer " +  token,
-        "Content-Type" : "application/json"
-    }
-    userId = requests.get(url='https://api.spotify.com/v1/me', headers=headers).json()['id']
-
-    # Make a new playlist
-    params = {
-            "name" : "Melon Top 100",
-            "public": "true",
-            "description" : "Made by github.com/ko28 and generated on " + str(datetime.now())
-    }
-    # Weird bug that requires json.dumps(params), took me a couple days to figure out :^( 
-    playlist = requests.post(url='https://api.spotify.com/v1/users/' + userId + '/playlists', data=json.dumps(params), headers=headers).json()
-
-
-    return playlist['id']
+    token = spotify.token(flask.request.args.get('code'), flask.request.host_url + 'spotify/playlist', ClientId, ClientSecret)    
+    playlist = spotify.makePlaylist(token)
+    liveChart = getList("LIVE")
+    return spotify.convertChartToPlaylist(liveChart, playlist['id'], token)
 
 
 '''
