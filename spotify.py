@@ -5,6 +5,8 @@ import requests
 import json
 import time
 import random
+import os
+from torrequest import TorRequest
 from datetime import datetime
 
 def token(code, redirect_uri, ClientId, ClientSecret):
@@ -47,12 +49,15 @@ def makePlaylist(token):
     params = {
             "name" : "Melon Top 100",
             "public": "true",
-            "description" : "Made by github.com/ko28 and generated on " + str(datetime.now())
+            "description" : "Made with love by github.com/ko28 and generated on " + str(datetime.now())
     }
     # Weird bug that requires json.dumps(params), took me a couple days to figure out :^( 
     return requests.post(url='https://api.spotify.com/v1/users/' + userId(token) + '/playlists', data=json.dumps(params), headers=headers).json()
 
 def convertChartToPlaylist(chart, playlist_id, token):
+    
+    os.system("sudo /etc/init.d/tor restart")
+
     headers = {
         "Authorization" : "Bearer " +  token,
         "Content-Type" : "application/json"
@@ -60,23 +65,50 @@ def convertChartToPlaylist(chart, playlist_id, token):
 
     # Json string to a json object
     chartjson = json.loads(chart)
-    uri = "uris=spotify:track:"
+    uri = []
     # Convert each song to English title and add that song to Spotify playlist if it exists
     for song in chartjson.values():
-        # Remove the parentheses in search terms 
+        # Remove the parentheses in search terms when getting English name from iTunes
         searchTerm = songNameConvert(song['name'].split("(",maxsplit=1)[0], song['artists'].split("(",maxsplit=1)[0])
-        response = searchSong(searchTerm, token)
-        # Check if response contains a track
+        # Search song title with parentheses removed + artist(s)
+        response = searchSong(" ".join(searchTerm), token)
+        # Check if response contains a track     
         if response['tracks']['total'] != 0:
-            trackId = response['tracks'][0]['id']
-            uri += trackId + " "
-             
+            trackId = response['tracks']['items'][0]['id']
+            #print(trackId)
+            uri.append('spotify:track:' + trackId)
+            #print(uri)
+        else:
+            # Search song title with parentheses removed + first artist from iTunes english name
+            noparentheses = searchTerm[0].split("(")[0]
+            response = searchSong(noparentheses + " " + searchTerm[1].split(",")[0], token)
+            if response['tracks']['total'] != 0:
+                trackId = response['tracks']['items'][0]['id']
+                uri.append('spotify:track:' + trackId)
+            else:
+                 # Search only song title with parentheses + commas removed
+                nocommas = noparentheses.split(",")[0]
+                response = searchSong(nocommas, token)
+                if response['tracks']['total'] != 0:
+                    trackId = response['tracks']['items'][0]['id']
+                    uri.append('spotify:track:' + trackId)
+                else:
+                    # Pull what is in parentheses from original melon title, probably should use regex but I'm lazy
+                    name = song['name'].split('(', 1)[1].split(')')[0] if  "(" and ")" in song['name'] else song['name']
+                    artist = song['artists'].split('(', 1)[1].split(')')[0] if "(" and ")" in song['artists'] else ""
+                    response = searchSong(name + " " + artist, token)
+                    if response['tracks']['total'] != 0:
+                        trackId = response['tracks']['items'][0]['id']
+                        uri.append('spotify:track:' + trackId)
+                    else:
+                        print("Could not find " +  song['name'] + " " + song['artists'])
+                  
     params = {
-                "uri" : "spotify:track:" + uri
-            }  
-    requests.post(url='https://api.spotify.com/v1/playlists/'+ playlist_id +'/tracks', headers=headers, json=params)
-
-    return uri
+        "uris" : uri
+    }  
+    requests.post(url='https://api.spotify.com/v1/playlists/'+ playlist_id +'/tracks', headers=headers, json=params).json()
+    return playlist_id
+    
 
 def searchSong(query, token):
     headers = {
@@ -93,20 +125,20 @@ def searchSong(query, token):
 def songNameConvert(name, artist):
     """
     itunes api works well to convert song names, spotify sucks
-
+    requires tor 
     rate limit , 20/minute wtf lol
 
     https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
     """
-    time.sleep(5)
-
     params = {
     "term": name + " " + artist,
     "country" : "US",
     "limit" : "1"
     }
-    response = requests.get('https://itunes.apple.com/search', params=params).json()
-
+    
+    tr = TorRequest(password=os.environ['TorPassword'])
+    response = itunesJsonTor(params, tr)
+        
     if response['resultCount'] == 0:
         # Try searching just the name
         params = {
@@ -114,10 +146,20 @@ def songNameConvert(name, artist):
             "country" : "US",
             "limit" : "1"
         }
-        response = requests.get('https://itunes.apple.com/search', params=params).json()
-        # Return inputted
+        response = itunesJsonTor(params, tr)
+        # Return original arguments, itunes could not find a match
         if response['resultCount'] == 0:
-            return [response['results'][0]['trackName'], response['results'][0]['artistName']]
+            return [name, artist]
 
     return [response['results'][0]['trackName'], response['results'][0]['artistName']]
 
+def itunesJsonTor(params, tr):
+    while True:
+        response = tr.get('https://itunes.apple.com/search', params=params)
+        if response.status_code != 200: # Invalid response
+            print("Resetting Tor identity, takes 10 seconds(ish)")
+            start_time = time.time()
+            tr.reset_identity() #Reset Tor
+            print("reset_identity took", time.time() - start_time, "to run")
+        else:
+            return response.json()

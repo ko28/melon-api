@@ -1,12 +1,13 @@
 # melonApi
 <img src="https://i.imgur.com/Igpf68Q.png" width="300">
 
+create a loading page 
 
 Add this to your .bashrc or run it in your shell or add it to heroku config vars if you want spotify 
 https://developer.spotify.com/
 export ClientId='yourClientID'
 export ClientSecret='yourClientSecret'
-
+expor TorPassword='yourUnhashedTorPassword'
 add flask.request.host_url + 'spotify/playlist'
 flask.request.host_url + 'spotify'
 to valid redirect link

@@ -28,13 +28,10 @@ def getOAuthCode():
     '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
 
 @app.route('/spotify/playlist', methods=['GET'])
-def makePlaylist():    
-    #add try catch here 
-        
-    # Generate access token   
+def makePlaylist():  
+    liveChart = getList("LIVE")  
     token = spotify.token(flask.request.args.get('code'), flask.request.host_url + 'spotify/playlist', ClientId, ClientSecret)    
     playlist = spotify.makePlaylist(token)
-    liveChart = getList("LIVE")
     return spotify.convertChartToPlaylist(liveChart, playlist['id'], token)
 
 
