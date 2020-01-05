@@ -58,51 +58,54 @@ def convertChartToPlaylist(chart, playlist_id, token):
     
     os.system("sudo /etc/init.d/tor restart")
 
+    # Json string to a json object
+    chartjson = json.loads(chart)
+    # List of spotify song id's
+    uri = []
+
+    # Convert each song to English title and add that song to Spotify playlist 
+    for song in chartjson.values():
+        # Case 01: Search song title in iTunes with parentheses removed + artist(s) name
+        searchTerm = songNameConvert(song['name'].split("(",maxsplit=1)[0], song['artists'].split("(",maxsplit=1)[0])
+        # Search Spoitfy for the english song name
+        response = searchSong(" ".join(searchTerm), token)
+        # Check if Spoify's response has a track     
+        if response['tracks']['total'] != 0:
+            trackId = response['tracks']['items'][0]['id']
+            uri.append('spotify:track:' + trackId)
+            continue
+
+        # Case 02: Search song title with parentheses removed (from previous iTunes search) + first artist from iTunes english name
+        noparentheses = searchTerm[0].split("(")[0]
+        response = searchSong(noparentheses + " " + searchTerm[1].split(",")[0], token)
+        if response['tracks']['total'] != 0:
+            trackId = response['tracks']['items'][0]['id']
+            uri.append('spotify:track:' + trackId)
+            continue
+
+        # Case 03: Search only song title with parentheses + commas removed (from previous iTunes search)
+        nocommas = noparentheses.split(",")[0]
+        response = searchSong(nocommas, token)
+        if response['tracks']['total'] != 0:
+            trackId = response['tracks']['items'][0]['id']
+            uri.append('spotify:track:' + trackId)
+            continue
+
+        # Case 04: Search what in inside of parentheses from original melon song + artist, probably should use regex but I'm lazy
+        name = song['name'].split('(', 1)[1].split(')')[0] if  "(" and ")" in song['name'] else song['name']
+        artist = song['artists'].split('(', 1)[1].split(')')[0] if "(" and ")" in song['artists'] else ""
+        response = searchSong(name + " " + artist, token)
+        if response['tracks']['total'] != 0:
+            trackId = response['tracks']['items'][0]['id']
+            uri.append('spotify:track:' + trackId)
+            continue
+
+        print("Could not find " +  song['name'] + " " + song['artists'])
+    
     headers = {
         "Authorization" : "Bearer " +  token,
         "Content-Type" : "application/json"
-    }
-
-    # Json string to a json object
-    chartjson = json.loads(chart)
-    uri = []
-    # Convert each song to English title and add that song to Spotify playlist if it exists
-    for song in chartjson.values():
-        # Remove the parentheses in search terms when getting English name from iTunes
-        searchTerm = songNameConvert(song['name'].split("(",maxsplit=1)[0], song['artists'].split("(",maxsplit=1)[0])
-        # Search song title with parentheses removed + artist(s)
-        response = searchSong(" ".join(searchTerm), token)
-        # Check if response contains a track     
-        if response['tracks']['total'] != 0:
-            trackId = response['tracks']['items'][0]['id']
-            #print(trackId)
-            uri.append('spotify:track:' + trackId)
-            #print(uri)
-        else:
-            # Search song title with parentheses removed + first artist from iTunes english name
-            noparentheses = searchTerm[0].split("(")[0]
-            response = searchSong(noparentheses + " " + searchTerm[1].split(",")[0], token)
-            if response['tracks']['total'] != 0:
-                trackId = response['tracks']['items'][0]['id']
-                uri.append('spotify:track:' + trackId)
-            else:
-                 # Search only song title with parentheses + commas removed
-                nocommas = noparentheses.split(",")[0]
-                response = searchSong(nocommas, token)
-                if response['tracks']['total'] != 0:
-                    trackId = response['tracks']['items'][0]['id']
-                    uri.append('spotify:track:' + trackId)
-                else:
-                    # Pull what is in parentheses from original melon title, probably should use regex but I'm lazy
-                    name = song['name'].split('(', 1)[1].split(')')[0] if  "(" and ")" in song['name'] else song['name']
-                    artist = song['artists'].split('(', 1)[1].split(')')[0] if "(" and ")" in song['artists'] else ""
-                    response = searchSong(name + " " + artist, token)
-                    if response['tracks']['total'] != 0:
-                        trackId = response['tracks']['items'][0]['id']
-                        uri.append('spotify:track:' + trackId)
-                    else:
-                        print("Could not find " +  song['name'] + " " + song['artists'])
-                  
+    }              
     params = {
         "uris" : uri
     }  
