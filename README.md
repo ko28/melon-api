@@ -1,6 +1,13 @@
 # melon-api
 <img src="https://i.imgur.com/Igpf68Q.png" width="300">
 
+![PyPI](https://img.shields.io/pypi/v/melonapi?color=success&label=pypi%20package)
+[![Heroku App Status](http://heroku-shields.herokuapp.com/ko28melonapi)](https://ko28melonapi.herokuapp.com)
+![GitHub last commit](https://img.shields.io/github/last-commit/ko28/melon-api)
+[![Downloads](https://pepy.tech/badge/melonapi)](https://pepy.tech/project/melonapi)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Run on Repl.it](https://repl.it/badge/github/ko28/melonapi-example)](https://repl.it/@ko28/melonapi-example)
+
 A simple chart API written in Flask for Melon, a Korean music streaming service. 
 
 # Endpoints (GET)
