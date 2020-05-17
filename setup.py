@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="melonapi", 
-    version="0.0.1",
+    version="0.0.2",
     author="Daniel Ko",
     author_email="danielhbko@gmail.com",
     description="A small Melon api",
