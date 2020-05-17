@@ -6,7 +6,6 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/ko28/melon-api)
 [![Downloads](https://pepy.tech/badge/melonapi)](https://pepy.tech/project/melonapi)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Run on Repl.it](https://repl.it/badge/github/ko28/melonapi-example)](https://repl.it/@ko28/melonapi-example)
 
 A simple chart API written in Flask for Melon, a Korean music streaming service. 
 
@@ -30,6 +29,8 @@ pip install melonapi
 ```
 ### Example usage 
 Printing out the top 100 songs right now on Melon.
+
+[![Run on Repl.it](https://repl.it/badge/github/ko28/melonapi-example)](https://repl.it/@ko28/melonapi-example)
 ```python
 from melonapi import scrapeMelon
 import json
