@@ -17,7 +17,7 @@ Example response:
 ```
 
 # Use as a Python package
-melon-api can be install from pypi
+melon-api can be installed from pypi
 ```bash
 pip install melonapi
 ```
