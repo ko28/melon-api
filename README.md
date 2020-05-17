@@ -24,9 +24,9 @@ pip install melonapi
 ### Example usage 
 Printing out the top 100 songs right now on Melon.
 ```python
- from melonapi import scrapeMelon
- import json
- print(json.loads(scrapeMelon.getList("LIVE")))
+from melonapi import scrapeMelon
+import json
+print(json.loads(scrapeMelon.getList("LIVE")))
 ```
 
 # Misc information
