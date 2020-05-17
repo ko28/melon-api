@@ -42,3 +42,4 @@ to valid redirect link
 TODO: download lyric support, genre support, chart with different parameters, most popular songs of a given artist  
 Add spotify feature, https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and caching
 http://ghibliapi.herokuapp.com/#section/Helper-Libraries
+Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
