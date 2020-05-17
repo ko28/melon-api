@@ -1,7 +1,7 @@
 # melonApi
 <img src="https://i.imgur.com/Igpf68Q.png" width="300">
 
-A simple chart API for Melon, a Korean music streaming service. 
+A simple chart API written in Flask for Melon, a Korean music streaming service. 
 
 Endpoints (GET):
 * https://ko28melonapi.herokuapp.com/chart/live
