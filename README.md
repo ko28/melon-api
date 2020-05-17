@@ -28,9 +28,9 @@ melon-api can be installed from pypi
 pip install melonapi
 ```
 ### Example usage 
-Printing out the top 100 songs right now on Melon.
-
 [![Run on Repl.it](https://repl.it/badge/github/ko28/melonapi-example)](https://repl.it/@ko28/melonapi-example)
+
+Printing out the top 100 songs right now on Melon.
 ```python
 from melonapi import scrapeMelon
 import json
@@ -50,4 +50,5 @@ to valid redirect link
 TODO: download lyric support, genre support, chart with different parameters, most popular songs of a given artist  
 Add spotify feature, https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and caching
 http://ghibliapi.herokuapp.com/#section/Helper-Libraries
+
 Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
