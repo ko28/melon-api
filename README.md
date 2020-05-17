@@ -1,4 +1,4 @@
-# melonApi
+# melon-api
 <img src="https://i.imgur.com/Igpf68Q.png" width="300">
 
 A simple chart API written in Flask for Melon, a Korean music streaming service. 
