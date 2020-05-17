@@ -19,8 +19,9 @@ def getList(time):
         time (str): Which chart you want (LIVE, RISE, DAY, WEEK, MONTH)
 
     Returns:
-        json (str): Json string that contains the top 100 songs. 
+        json (str): Seralized json string that contains the top 100 songs. 
                     Key is ranking of song; value is name, ranking, artists, songId, albumId (id's are Melon specific).  
+					NOTE: You want to use json.loads(getList("time")) to deseralize the data. 
 
     """
     html = subprocess.run(['curl', URL[time]], stdout=subprocess.PIPE)
