@@ -1,1 +1,1 @@
-web: gunicorn melonApi.melonApi:app
+web: gunicorn melonapi.melonapi:app
