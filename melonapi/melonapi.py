@@ -23,13 +23,14 @@ def spalsh():
 def chart(key):
     return getList(key.upper())
 
-@app.route('/spotify', methods=['GET'])
-def getOAuthCode():
-    # Go to Spotify's authorization page to get authorization code
-    return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + ClientId + 
-    '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
+#Buggy, removed for now
+#@app.route('/spotify', methods=['GET'])
+#def getOAuthCode():
+#    # Go to Spotify's authorization page to get authorization code
+#    return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + ClientId + 
+#    '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
 
-#Buggy, removed for now 
+ 
 #@app.route('/spotify/playlist', methods=['GET'])
 #def makePlaylist():  
 #    liveChart = getList("LIVE")  
