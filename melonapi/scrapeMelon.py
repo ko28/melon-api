@@ -1,7 +1,8 @@
-import subprocess
+import requests
 import re
 from bs4 import BeautifulSoup
 import json
+import subprocess
 
 URL = {
     'LIVE': 'https://www.melon.com/chart/index.htm',
@@ -24,18 +25,35 @@ def getList(time):
 					NOTE: You want to use json.loads(getList("time")) to deseralize the data. 
 
     """
-    html = subprocess.run(['curl', URL[time]], stdout=subprocess.PIPE)
-    soup = BeautifulSoup(html.stdout, "lxml")
+    #html = requests.get(URL[time.upper()]).text
+    html = subprocess.run(['curl', URL[time]], stdout=subprocess.PIPE).stdout
+    soup = BeautifulSoup(html, "lxml")
     data = {}
-    # Iterate over html by song, lst50 is 1 ~ 50, lst100 is 51 ~ 100
-    for tag in soup.findAll("tr", {"class": ["lst50", "lst100"]}):
-        # Key is ranking of the song
-        data[tag.find("span", {"class": ["rank top", "rank"]}).getText()] = {
-            "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),
-            "ranking": tag.find("span", {"class": ["rank top", "rank"]}).getText(),
-            "artists": tag.find("span", {"class": "checkEllipsis"}).getText(),
-            "songId": re.search(r'goSongDetail\(\'(.*)\'\)', str(tag)).group(1),
-            "albumId": re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
-        }
-    # Some data is in Korean, must format with utf8 to avoid printing out utf code
+    
+    # Melon recently changed how their live chart works, tried to fix it as best as I could
+    if time.upper() == "LIVE":
+        rank = 1
+        for tag in soup.findAll("tr", {"data-song-no": True}):
+            print(tag.find("div", {"class": "ellipsis rank01"}).getText())
+            # Key is ranking of the song
+            data[rank] = {
+                "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),
+                "artists": tag.find("span", {"class": "checkEllipsis"}).getText(),
+                "ranking": rank,
+                "songId": re.search(r'goSongDetail\(\'(.*)\'\)', str(tag)).group(1),
+                "albumId": re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
+            }
+            rank+=1
+
+    else:
+        for tag in soup.findAll("tr", {"class": ["lst50", "lst100"]}):
+            # Key is ranking of the song
+            data[tag.find("span", {"class": ["rank top", "rank"]}).getText()] = {
+                "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),
+                "ranking": tag.find("span", {"class": ["rank top", "rank"]}).getText(),
+                "artists": tag.find("span", {"class": "checkEllipsis"}).getText(),
+                "songId": re.search(r'goSongDetail\(\'(.*)\'\)', str(tag)).group(1),
+                "albumId": re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
+            }
+        # Some data is in Korean, must format with utf8 to avoid printing out utf code
     return json.dumps(data, ensure_ascii=False).encode('utf8')

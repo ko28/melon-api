@@ -5,13 +5,15 @@ import flask
 import os
 import requests
 import json
-from . import spotify
-from .scrapeMelon import getList
+#from . import spotify
+from scrapeMelon import getList
 from datetime import datetime
 
 app = flask.Flask(__name__)
-ClientId = os.environ['ClientId']
-ClientSecret = os.environ['ClientSecret']
+
+#Settings for playlist
+#ClientId = os.environ['ClientId']
+#ClientSecret = os.environ['ClientSecret']
 
 @app.route('/', methods=['GET'])
 def spalsh():
@@ -27,12 +29,13 @@ def getOAuthCode():
     return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + ClientId + 
     '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
 
-@app.route('/spotify/playlist', methods=['GET'])
-def makePlaylist():  
-    liveChart = getList("LIVE")  
-    token = spotify.token(flask.request.args.get('code'), flask.request.host_url + 'spotify/playlist', ClientId, ClientSecret)    
-    playlist = spotify.makePlaylist(token)
-    return spotify.convertChartToPlaylist(liveChart, playlist['id'], token)
+#Buggy, removed for now 
+#@app.route('/spotify/playlist', methods=['GET'])
+#def makePlaylist():  
+#    liveChart = getList("LIVE")  
+#    token = spotify.token(flask.request.args.get('code'), flask.request.host_url + 'spotify/playlist', ClientId, ClientSecret)    
+#    playlist = spotify.makePlaylist(token)
+#    return spotify.convertChartToPlaylist(liveChart, playlist['id'], token)
 
 
 '''
