@@ -6,7 +6,7 @@ import os
 import requests
 import json
 #from . import spotify
-from scrapeMelon import getList
+from .scrapeMelon import getList
 from datetime import datetime
 
 app = flask.Flask(__name__)
