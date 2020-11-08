@@ -47,8 +47,12 @@ add flask.request.host_url + 'spotify/playlist'
 flask.request.host_url + 'spotify'
 to valid redirect link
 
-TODO: download lyric support, genre support, chart with different parameters, most popular songs of a given artist  
-Add spotify feature, https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and caching
-http://ghibliapi.herokuapp.com/#section/Helper-Libraries
 
-Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
+# Todo
+- [ ] Search (by name, genre, etc)
+- [ ] List most popular songs of a given artist
+- [ ] Visualize data 
+- [ ] Download lyric support
+- [ ] Top 100 songs => Spotify Playlist conversion (nontrival task as spotify search is not very good for korean input, apple music search is really good but their api rate limited me so i tried tor but seemed like abuse) 
+- [ ] Caching results (https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and http://ghibliapi.herokuapp.com/#section/Helper-Libraries)
+- [ ] Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
