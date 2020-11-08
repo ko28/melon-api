@@ -50,6 +50,7 @@ to valid redirect link
 
 # Todo
 - [ ] Search (by name, genre, etc)
+- [ ] Playlist creation, list of song id's and create a new playlist (reverse engineering)
 - [ ] List most popular songs of a given artist
 - [ ] Visualize data 
 - [ ] Download lyric support
