@@ -57,3 +57,4 @@ to valid redirect link
 - [ ] Top 100 songs => Spotify Playlist conversion (nontrival task as spotify search is not very good for korean input, apple music search is really good but their api rate limited me so i tried tor but seemed like abuse) 
 - [ ] Caching results (https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and http://ghibliapi.herokuapp.com/#section/Helper-Libraries)
 - [ ] Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
+- [ ] Auto push to pip using github actions
