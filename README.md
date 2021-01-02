@@ -10,11 +10,15 @@
 A simple chart API written in Flask for Melon, a Korean music streaming service. 
 
 # Endpoints (GET)
+Replace https://ko28melonapi.herokuapp.com/ with localhost when running locally
+## Chart
 * https://ko28melonapi.herokuapp.com/chart/live
 * https://ko28melonapi.herokuapp.com/chart/rise
 * https://ko28melonapi.herokuapp.com/chart/day
 * https://ko28melonapi.herokuapp.com/chart/week
 * https://ko28melonapi.herokuapp.com/chart/month
+## Lyric 
+* https://ko28melonapi.herokuapp.com/lyric/\<songId\>
 
 Response contains 100 entries. Key is ranking of song; value is name, ranking, artists, songId, albumId (id's are Melon specific). 
 Example response:
@@ -34,8 +38,12 @@ Printing out the top 100 songs right now on Melon.
 ```python
 from melonapi import scrapeMelon
 import json
-print(json.loads(scrapeMelon.getList("LIVE")))
+print(scrapeMelon.getList("LIVE").decode())
 ```
+# Local Development
+Run the following command inside the melonapi folder to serve up flask web app.
+`FLASK_APP=melonapi.py FLASK_ENV=development flask run --port 8000`
+Navigate to `localhost:8000` to access the app. 
 
 # Misc information
 Add this to your .bashrc or run it in your shell or add it to heroku config vars if you want spotify 
@@ -53,8 +61,8 @@ to valid redirect link
 - [ ] Playlist creation, list of song id's and create a new playlist (reverse engineering)
 - [ ] List most popular songs of a given artist
 - [ ] Visualize data 
-- [ ] Download lyric support
+- [x] Download lyric support
 - [ ] Top 100 songs => Spotify Playlist conversion (nontrival task as spotify search is not very good for korean input, apple music search is really good but their api rate limited me so i tried tor but seemed like abuse) 
 - [ ] Caching results (https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and http://ghibliapi.herokuapp.com/#section/Helper-Libraries)
-- [ ] Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
+- [x] Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
 - [ ] Auto push to pip using github actions

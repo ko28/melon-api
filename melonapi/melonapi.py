@@ -7,6 +7,7 @@ import requests
 import json
 #from . import spotify
 from .scrapeMelon import getList
+from .scrapeMelon import getLyric
 from datetime import datetime
 
 app = flask.Flask(__name__)
@@ -22,6 +23,10 @@ def spalsh():
 @app.route('/chart/<string:key>', methods=['GET'])
 def chart(key):
     return getList(key.upper())
+
+@app.route('/lyric/<string:key>', methods=['GET'])
+def lyric(key):
+    return getLyric(key)
 
 #Buggy, removed for now
 #@app.route('/spotify', methods=['GET'])

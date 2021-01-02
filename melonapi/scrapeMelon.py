@@ -2,7 +2,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import json
-import subprocess
 
 URL = {
     'LIVE': 'https://www.melon.com/chart/index.htm',
@@ -25,11 +24,9 @@ def getList(time):
 					NOTE: You want to use json.loads(getList("time")) to deseralize the data. 
 
     """
-    #html = requests.get(URL[time.upper()]).text
-    html = subprocess.run(['curl', URL[time]], stdout=subprocess.PIPE).stdout
+    html = requests.get(URL[time.upper()], headers={'User-Agent':"github.com/ko28/melon-api"}).text
     soup = BeautifulSoup(html, "lxml")
     data = {}
-    
     # Melon recently changed how their live chart works, tried to fix it as best as I could
     if time.upper() == "LIVE":
         rank = 1
@@ -55,5 +52,13 @@ def getList(time):
                 "songId": re.search(r'goSongDetail\(\'(.*)\'\)', str(tag)).group(1),
                 "albumId": re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
             }
-        # Some data is in Korean, must format with utf8 to avoid printing out utf code
-    return json.dumps(data, ensure_ascii=False).encode('utf8')
+        # Some data is in Korean, must format with utf-8 to avoid printing out utf code
+    return json.dumps(data, ensure_ascii=False).encode('utf-8')
+
+def getLyric(songId):
+    url = 'https://www.melon.com/song/detail.htm?songId='+str(songId)
+    req = requests.get(url, headers={'User-Agent':"github.com/ko28/melon-api"})
+    html = req.text.replace("<BR>", "\n")
+    soup = BeautifulSoup(html, "lxml")
+    lyrics = soup.find("div", {"class": "lyric"})
+    return lyrics.text.strip() 
