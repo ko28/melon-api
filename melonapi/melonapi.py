@@ -5,7 +5,7 @@ import flask
 import os
 import requests
 import json
-#from . import spotify
+from . import spotify
 from .scrapeMelon import getList
 from .scrapeMelon import getLyric
 from datetime import datetime
@@ -13,8 +13,8 @@ from datetime import datetime
 app = flask.Flask(__name__)
 
 #Settings for playlist
-#ClientId = os.environ['ClientId']
-#ClientSecret = os.environ['ClientSecret']
+client_id = os.environ['client_id']
+client_secret = os.environ['client_secret']
 
 @app.route('/', methods=['GET'])
 def spalsh():
@@ -29,19 +29,19 @@ def lyric(key):
     return getLyric(key)
 
 #Buggy, removed for now
-#@app.route('/spotify', methods=['GET'])
-#def getOAuthCode():
-#    # Go to Spotify's authorization page to get authorization code
-#    return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + ClientId + 
-#    '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
+@app.route('/spotify', methods=['GET'])
+def getOAuthCode():
+    # Go to Spotify's authorization page to get authorization code
+    return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + client_id + 
+    '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
 
  
-#@app.route('/spotify/playlist', methods=['GET'])
-#def makePlaylist():  
-#    liveChart = getList("LIVE")  
-#    token = spotify.token(flask.request.args.get('code'), flask.request.host_url + 'spotify/playlist', ClientId, ClientSecret)    
-#    playlist = spotify.makePlaylist(token)
-#    return spotify.convertChartToPlaylist(liveChart, playlist['id'], token)
+@app.route('/spotify/playlist', methods=['GET'])
+def makePlaylist():  
+    liveChart = getList("LIVE")  
+    token = spotify.token(flask.request.args.get('code'), flask.request.host_url + 'spotify/playlist', client_id, client_secret)    
+    playlist = spotify.makePlaylist(token)
+    return "https://open.spotify.com/playlist/"+spotify.convertChartToPlaylist(liveChart, playlist['id'], token)
 
 
 '''
