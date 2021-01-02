@@ -67,7 +67,6 @@ pip install melonapi
 Printing out the top 100 songs right now on Melon.
 ```python
 from melonapi import scrapeMelon
-import json
 print(scrapeMelon.getList("LIVE").decode())
 ```
 # Local Development
