@@ -75,14 +75,12 @@ Run the following command inside the melonapi folder to serve up flask web app.
 Navigate to `localhost:8000` to access the app. 
 
 # Misc information
-Add this to your .bashrc or run it in your shell or add it to heroku config vars if you want spotify 
+Add this to your .bashrc or run it in your shell or add it to heroku config vars if you want spotify playlist
 https://developer.spotify.com/
-export ClientId='yourClientID'
-export ClientSecret='yourClientSecret'
-expor TorPassword='yourUnhashedTorPassword'
-add flask.request.host_url + 'spotify/playlist'
-flask.request.host_url + 'spotify'
-to valid redirect link
+* export client_id='yourClientID'
+* export client_secret='yourClientSecret'
+
+add (flask.request.host_url or localhost:8000) + 'spotify/playlist' to valid redirect link
 
 
 # Todo

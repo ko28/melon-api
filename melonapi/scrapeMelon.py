@@ -31,7 +31,6 @@ def getList(time):
     if time.upper() == "LIVE":
         rank = 1
         for tag in soup.findAll("tr", {"data-song-no": True}):
-            print(tag.find("div", {"class": "ellipsis rank01"}).getText())
             # Key is ranking of the song
             data[rank] = {
                 "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),
