@@ -18,6 +18,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-	install_requires=['flask', 'requests', 'torrequest', 'datetime', 'bs4', 'lxml'],
+	install_requires=['Flask', 'requests', 'lxml', 'beautifulsoup4'],
     python_requires='>=3.6',
 )
