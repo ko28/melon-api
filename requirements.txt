@@ -35,3 +35,4 @@ urllib3==1.25.7
 Werkzeug==0.16.0
 wrapt==1.11.2
 yarl==1.4.2
+selenium==4.0.0
