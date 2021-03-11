@@ -5,6 +5,7 @@ import os
 import os
 from datetime import datetime
 from bs4 import BeautifulSoup
+from urllib.parse import urlencode
 
 URL = {
     'LIVE': 'https://www.melon.com/chart/index.htm',
@@ -20,9 +21,9 @@ def getList(time):
     Args:
         time (str): Which chart you want (LIVE, RISE, DAY, WEEK, MONTH)
     Returns:
-        json (str): Seralized json string that contains the top 100 songs. 
-                    Key is ranking of song; value is name, ranking, artists, songId, albumId (id's are Melon specific).  
-                    NOTE: You want to use json.loads(getList("time")) to deseralize the data. 
+        json (str): Seralized json string that contains the top 100 songs.
+                    Key is ranking of song; value is name, ranking, artists, songId, albumId (id's are Melon specific).
+                    NOTE: You want to use json.loads(getList("time")) to deseralize the data.
     """
     html = requests.get(URL[time.upper()], headers={
                         'User-Agent': "github.com/ko28/melon-api"}).text
@@ -65,11 +66,9 @@ def getLyric(songId):
     lyrics = soup.find("div", {"class": "lyric"})
     return lyrics.text.strip()
 
-# This is a bit of a mess since these pages are rendered via javascript we need selenium
 
-
-def yearChart(seleniumDriver, year, domestic=True):
-    """Generates json file of the top 50 songs + (additional metadata) on Melon
+def yearChart(year, domestic=True):
+    """Generates returns top 50 songs for given year + (additional metadata) on Melon
 
     Args:
         year (str): the year you wish to fetch
@@ -77,24 +76,27 @@ def yearChart(seleniumDriver, year, domestic=True):
 
     Returns:
         json (str): Seralized json string that contains the top 50 songs for year.
-                    Key is ranking of song; value is name, ranking, artists, songId, albumId (id's are Melon specific).
-                                        NOTE: You want to use json.loads(getList("time")) to deseralize the data.
+                    value is name, ranking, artists, songId, albumId (id's are Melon specific) and a link to the album
 
     """
 
     chartGenere = "KPOP" if domestic else "POP"
-    url = "https://www.melon.com/chart/age/index.htm?chartType=YE&chartGenre={}&chartDate={}".format(
-        chartGenere, year)
+    queryParm = {
+        'idx': 1,
+        'chartType': 'YE',
+        'moved': 'Y',
+        'chartGenre': chartGenere,
+        'chartDate': year,
+    }
+    url = "https://www.melon.com/chart/age/list.htm?" + urlencode(queryParm)
 
-    seleniumDriver.get(url)
-    html = seleniumDriver.page_source
+    html = requests.get(
+        url, headers={'User-Agent': "github.com/ko28/melon-api"}).text
 
     soup = BeautifulSoup(html, "lxml")
     data = []
 
-    bottomList = soup.find("div", {"id": ["tb_list"]})
-
-    for tag in bottomList.findAll("tr", {"class": ["lst50"]}):
+    for tag in soup.findAll("tr", {"class": ["lst50"]}):
         albumId = re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
         data.append({
             "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),

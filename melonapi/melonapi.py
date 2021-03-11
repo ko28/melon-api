@@ -9,8 +9,6 @@ from datetime import datetime
 from flask import request
 from re import match
 from werkzeug.routing import BaseConverter
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from .spotify import token as createToken
 from .spotify import makePlaylist
 from .spotify import convertChartToPlaylist
@@ -53,15 +51,7 @@ def listAge(year):
 
     overseas = request.args.get('overseas')
 
-    if overseas != None:
-        fileName = "overseas"
-    else:
-        fileName = "local"
-
-    fileName = os.path.join(
-        "static", "scrape_year", "{}_{}.json".format(fileName, year))
-
-    return flask.send_file(fileName, mimetype="text/json")
+    return {"result": yearChart(year, overseas != None)}, 200, default_headers
 
 
 @app.route('/lyric/<string:key>', methods=['GET'])
@@ -84,44 +74,7 @@ def makePlaylist():
     playlist = makePlaylist(token)
     return "https://open.spotify.com/playlist/"+convertChartToPlaylist(liveChart, playlist['id'], token)
 
-# Pre pull and render pages to get previous year charts
-
-
-def scrapeYears():
-    if not os.path.isdir(os.path.join("static", "scrape_year")):
-        os.mkdir(os.path.join("static", "scrape_year"))
-
-    seleniumDriver = None
-
-    # Creating this driver is slow so we don't always want to do it
-    def getDriver():
-        nonlocal seleniumDriver
-        if seleniumDriver == None:
-            # Headless mode is causing parsing errors + Firefox is also
-            seleniumDriver = webdriver.Chrome()
-
-        return seleniumDriver
-
-    # 1964 is the furthest the charts go back
-    for year in range(1964, datetime.now().year):
-        localFile = os.path.join(
-            "static", "scrape_year", "local_{}.json".format(year))
-        overseasFile = os.path.join(
-            "static", "scrape_year", "overseas_{}.json".format(year))
-
-        if not os.path.isfile(localFile):
-            with open(localFile, "w", encoding="utf-8") as f:
-                f.write(json.dumps(
-                    yearChart(getDriver(), str(year), True), indent=4))
-
-        if not os.path.isfile(overseasFile):
-            with open(overseasFile, "w", encoding="utf-8") as f:
-                f.write(json.dumps(
-                    yearChart(getDriver(), str(year), False), indent=4))
-
 
 # Needs to be on the bottom
 if __name__ == '__main__':
     app.run(threaded=True, debug=True)
-
-scrapeYears()
