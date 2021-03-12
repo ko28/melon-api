@@ -74,8 +74,6 @@ Run the following command inside the melonapi folder to serve up flask web app.
 `FLASK_APP=melonapi.py FLASK_ENV=development flask run --port 8000`
 Navigate to `localhost:8000` to access the app. 
 
-Note: You will need to setup your geco drivers for selenium
-
 # Misc information
 Add this to your .bashrc or run it in your shell or add it to heroku config vars if you want spotify playlist
 https://developer.spotify.com/
