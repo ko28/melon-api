@@ -1,11 +1,11 @@
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+with open("README.md", "r", encoding="utf8") as f:
+    long_description = f.read()
 
 setuptools.setup(
-    name="melonapi", 
-    version="0.0.2",
+    name="melonapi",
+    version="0.0.3",
     author="Daniel Ko",
     author_email="danielhbko@gmail.com",
     description="A small Melon api",
@@ -18,6 +18,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-	install_requires=['Flask', 'requests', 'lxml', 'beautifulsoup4'],
+    install_requires=['Flask', 'requests', 'lxml', 'beautifulsoup4'],
     python_requires='>=3.6',
 )
