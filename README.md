@@ -96,8 +96,17 @@ https://developer.spotify.com/
 add (flask.request.host_url or localhost:8000) + 'spotify/playlist' to valid redirect link
 
 # Run as Docker container 
+You can obtain the image via Dockerhub or build from source
+### Download from Dockerhub
+```
+docker pull danielko8/melonapi:latest
+```
+### Build
 ```
 docker build -t melon-api:latest .
+```
+## Run
+```
 docker run -p 5000:5000 melon-api
 ```
 Now go to `localhost:5000` to access the api!
