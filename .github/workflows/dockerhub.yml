@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: my-docker-hub-namespace/my-docker-hub-repository
+          images: danielko8/melonapi
       
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
