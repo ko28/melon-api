@@ -36,8 +36,8 @@ def getList(time):
                 "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),
                 "artists": tag.find("span", {"class": "checkEllipsis"}).getText(),
                 "ranking": rank,
-                "songId": re.search(r'goSongDetail\(\'(.*)\'\)', str(tag)).group(1),
-                "albumId": re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
+                "songId": re.search(r'goSongDetail\(\'([0-9]+)\'\)', str(tag)).group(1),
+                "albumId": re.search(r'goAlbumDetail\(\'([0-9]+)\'\)', str(tag)).group(1)
             }
             rank+=1
 
@@ -48,8 +48,8 @@ def getList(time):
                 "name": tag.find("div", {"class": "ellipsis rank01"}).getText().strip(),
                 "ranking": tag.find("span", {"class": ["rank top", "rank"]}).getText(),
                 "artists": tag.find("span", {"class": "checkEllipsis"}).getText(),
-                "songId": re.search(r'goSongDetail\(\'(.*)\'\)', str(tag)).group(1),
-                "albumId": re.search(r'goAlbumDetail\(\'(.*)\'\)', str(tag)).group(1)
+                "songId": re.search(r'goSongDetail\(\'([0-9]+)\'\)', str(tag)).group(1),
+                "albumId": re.search(r'goAlbumDetail\(\'([0-9]+)\'\)', str(tag)).group(1)
             }
         # Some data is in Korean, must format with utf-8 to avoid printing out utf code
     return json.dumps(data, ensure_ascii=False).encode('utf-8')
