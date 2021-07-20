@@ -70,11 +70,24 @@ from melonapi import scrapeMelon
 print(scrapeMelon.getList("LIVE").decode())
 ```
 # Local Development
-Run the following command inside the melonapi folder to serve up flask web app.
-`FLASK_APP=melonapi.py FLASK_ENV=development flask run --port 8000`
+## Setup local virtualenv 
+[Virtualenv][] is a handy way to manage different Python projects. 
+
+1) Install virtualenv via `pip3 install virtualenv 
+`
+2) Create a virtual environment via `virtualenv venv`
+3) Activate virtual environment via `source venv/bin/activate`
+4) Install dependencies via `pip install -r requirements.txt` 
+
+
+## Serve API
+Run the following command inside the `melonapi` directory to serve up flask web app.
+```
+FLASK_APP=melonapi.py FLASK_ENV=development client_id=foo client_secret=bar flask run --port 8000
+```
 Navigate to `localhost:8000` to access the app. 
 
-# Misc information
+## Spotify setup (optional)
 Add this to your .bashrc or run it in your shell or add it to heroku config vars if you want spotify playlist
 https://developer.spotify.com/
 * export client_id='yourClientID'
@@ -93,3 +106,5 @@ add (flask.request.host_url or localhost:8000) + 'spotify/playlist' to valid red
 - [ ] Caching results (https://hackernoon.com/a-cache-is-fast-enhancing-our-api-with-redis-bd61d13c3ca8 and http://ghibliapi.herokuapp.com/#section/Helper-Libraries)
 - [x] Refractor scrapeMelon to remove subprocess, this will not work on windows machines which do not have cURL 
 - [ ] Auto push to pip using github actions
+
+[Virtualenv]: https://virtualenv.pypa.io/en/latest/
