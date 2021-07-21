@@ -11,6 +11,7 @@ from .scrapeMelon import getLyric
 from datetime import datetime
 
 app = flask.Flask(__name__)
+default_headers = {'Content-Type': 'text/json'}
 
 #Settings for playlist
 client_id = os.getenv('client_id')
@@ -20,24 +21,23 @@ client_secret = os.getenv('client_secret')
 def spalsh():
     return flask.render_template('index.html')
 
-@app.route('/chart/<string:key>', methods=['GET'])
+@app.route('/api/v1/chart/<string:key>', methods=['GET'])
 def chart(key):
-    return getList(key.upper())
+    return getList(key.upper()), 200, default_headers
 
-@app.route('/lyric/<string:key>', methods=['GET'])
+@app.route('/api/v1/lyric/<int:key>', methods=['GET'])
 def lyric(key):
-    return getLyric(key)
+    return getLyric(key), 200, default_headers
 
-#Buggy, removed for now
-@app.route('/spotify', methods=['GET'])
+@app.route('/api/v1/spotify', methods=['GET'])
 def getOAuthCode():
     spotifyRequirement()
     # Go to Spotify's authorization page to get authorization code
     return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + client_id + 
-    '&response_type=code&redirect_uri=' + flask.request.host_url + 'spotify/playlist&scope=playlist-modify-public')  
+    '&response_type=code&redirect_uri=' + flask.request.host_url + 'api/v1/spotify/playlist&scope=playlist-modify-public')  
 
  
-@app.route('/spotify/playlist', methods=['GET'])
+@app.route('/api/v1/spotify/playlist', methods=['GET'])
 def makePlaylist():  
     spotifyRequirement()
     liveChart = getList("LIVE")  

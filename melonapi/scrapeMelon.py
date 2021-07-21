@@ -11,7 +11,6 @@ URL = {
     'MONTH': 'https://www.melon.com/chart/month/index.htm'
 }
 
-
 def getList(time):
     """Generates json file of the top 100 songs + (additional metadata) on Melon
 
@@ -57,7 +56,9 @@ def getList(time):
 def getLyric(songId):
     url = 'https://www.melon.com/song/detail.htm?songId='+str(songId)
     req = requests.get(url, headers={'User-Agent':"github.com/ko28/melon-api"})
-    html = req.text.replace("<BR>", "\n")
+    raw = req.text.lower()
+    html = raw.replace("<br>", "\n")
     soup = BeautifulSoup(html, "lxml")
-    lyrics = soup.find("div", {"class": "lyric"})
-    return lyrics.text.strip() 
+    lyric = soup.find("div", {"class": "lyric"})
+    payload = {"lyric" : lyric.text.strip()}
+    return json.dumps(payload, ensure_ascii=False).encode('utf-8')
