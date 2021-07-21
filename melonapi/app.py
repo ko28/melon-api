@@ -11,6 +11,7 @@ from .scrapeMelon import getLyric
 from datetime import datetime
 
 app = flask.Flask(__name__)
+
 default_headers = {'Content-Type': 'text/json'}
 
 #Settings for playlist
@@ -35,7 +36,6 @@ def getOAuthCode():
     # Go to Spotify's authorization page to get authorization code
     return flask.redirect('https://accounts.spotify.com/authorize?client_id=' + client_id + 
     '&response_type=code&redirect_uri=' + flask.request.host_url + 'api/v1/spotify/playlist&scope=playlist-modify-public')  
-
  
 @app.route('/api/v1/spotify/playlist', methods=['GET'])
 def makePlaylist():  
@@ -48,10 +48,6 @@ def makePlaylist():
 def spotifyRequirement():
     if (client_id or client_secret) is None:
         flask.abort()
-'''
-    except:
-        return "Could not get token, try clearing your cookies and logging again."
-        '''
    
 # Needs to be on the bottom 
 if __name__ == '__main__':
