@@ -2,7 +2,6 @@
 <img src="https://i.imgur.com/Igpf68Q.png" width="300">
 
 ![PyPI](https://img.shields.io/pypi/v/melonapi?color=success&label=pypi%20package)
-[![Heroku App Status](http://heroku-shields.herokuapp.com/ko28melonapi)](https://ko28melonapi.herokuapp.com)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ko28/melon-api)
 [![Downloads](https://pepy.tech/badge/melonapi)](https://pepy.tech/project/melonapi)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -21,7 +20,7 @@ Fetch Melon charts.
 
 **URL Parameters** : `time=[string]` where `time` is the specific chart you want. Available charts: 
 - live
-- rise
+- ~~rise~~(depercated)
 - day 
 - week
 - month

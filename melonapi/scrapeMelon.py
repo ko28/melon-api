@@ -5,7 +5,6 @@ import json
 
 URL = {
     'LIVE': 'https://www.melon.com/chart/index.htm',
-    'RISE': 'https://www.melon.com/chart/rise/index.htm',
     'DAY': 'https://www.melon.com/chart/day/index.htm',
     'WEEK': 'https://www.melon.com/chart/week/index.htm',
     'MONTH': 'https://www.melon.com/chart/month/index.htm'
