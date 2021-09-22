@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="melonapi", 
+    name="melonapi",
     version="0.0.2",
     author="Daniel Ko",
     author_email="danielhbko@gmail.com",
@@ -18,6 +18,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-	install_requires=['Flask', 'requests', 'lxml', 'beautifulsoup4'],
+    install_requires=['Flask', 'requests', 'lxml', 'beautifulsoup4'],
     python_requires='>=3.6',
 )

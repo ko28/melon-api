@@ -10,6 +10,7 @@ URL = {
     'MONTH': 'https://www.melon.com/chart/month/index.htm'
 }
 
+
 def getList(time):
     """Generates json file of the top 100 songs + (additional metadata) on Melon
 
@@ -19,10 +20,11 @@ def getList(time):
     Returns:
         json (str): Seralized json string that contains the top 100 songs. 
                     Key is ranking of song; value is name, ranking, artists, songId, albumId (id's are Melon specific).  
-					NOTE: You want to use json.loads(getList("time")) to deseralize the data. 
+                                        NOTE: You want to use json.loads(getList("time")) to deseralize the data. 
 
     """
-    html = requests.get(URL[time.upper()], headers={'User-Agent':"github.com/ko28/melon-api"}).text
+    html = requests.get(URL[time.upper()], headers={
+                        'User-Agent': "github.com/ko28/melon-api"}).text
     soup = BeautifulSoup(html, "lxml")
     data = {}
     # Melon recently changed how their live chart works, tried to fix it as best as I could
@@ -37,7 +39,7 @@ def getList(time):
                 "songId": re.search(r'goSongDetail\(\'([0-9]+)\'\)', str(tag)).group(1),
                 "albumId": re.search(r'goAlbumDetail\(\'([0-9]+)\'\)', str(tag)).group(1)
             }
-            rank+=1
+            rank += 1
 
     else:
         for tag in soup.findAll("tr", {"class": ["lst50", "lst100"]}):
@@ -52,12 +54,14 @@ def getList(time):
         # Some data is in Korean, must format with utf-8 to avoid printing out utf code
     return json.dumps(data, ensure_ascii=False).encode('utf-8')
 
+
 def getLyric(songId):
     url = 'https://www.melon.com/song/detail.htm?songId='+str(songId)
-    req = requests.get(url, headers={'User-Agent':"github.com/ko28/melon-api"})
+    req = requests.get(
+        url, headers={'User-Agent': "github.com/ko28/melon-api"})
     raw = req.text.lower()
     html = raw.replace("<br>", "\n")
     soup = BeautifulSoup(html, "lxml")
     lyric = soup.find("div", {"class": "lyric"})
-    payload = {"lyric" : lyric.text.strip()}
+    payload = {"lyric": lyric.text.strip()}
     return json.dumps(payload, ensure_ascii=False).encode('utf-8')
