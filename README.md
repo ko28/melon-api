@@ -40,11 +40,11 @@ Fetch Melon charts.
 ```
 
 ### Example call
-**cURL** : `curl 'https://melon.danielko.me/chart/live'`
+**cURL** : `curl 'https://melon.danielko.me/api/v1/chart/live'`
 
 **fetch** :
 ```javascript
-fetch('https://melon.danielko.me/chart/live')
+fetch('https://melon.danielko.me/api/v1/chart/live')
   .then(res => res.json())
   .then(console.log)
 ```
