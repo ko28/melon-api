@@ -128,11 +128,11 @@ docker pull danielko8/melonapi:latest
 ```
 ### Build
 ```
-docker build -t melon-api:latest .
+docker build -t melonapi:latest .
 ```
 ## Run
 ```
-docker run -p 5000:5000 melon-api
+docker run -p 5000:5000 melonapi
 ```
 Now go to `localhost:5000` to access the api!
 
