@@ -10,7 +10,6 @@ A simple chart API written in Flask for Melon, a Korean music streaming service.
 
 # Endpoints 
 
-A public endpoint (no guarantees that it will be up) that you can use for testing : `https://melon.danielko.me/`
 
 ## Chart
 
@@ -40,11 +39,11 @@ Fetch Melon charts.
 ```
 
 ### Example call
-**cURL** : `curl 'https://melon.danielko.me/api/v1/chart/live'`
+**cURL** : `curl 'https://<endpoint>/api/v1/chart/live'`
 
 **fetch** :
 ```javascript
-fetch('https://melon.danielko.me/api/v1/chart/live')
+fetch('https://<endpoint>/api/v1/chart/live')
   .then(res => res.json())
   .then(console.log)
 ```
@@ -71,11 +70,11 @@ Fetch lyrics from Melon.
 ```
 
 ### Example call
-**cURL** : `curl 'https://melon.danielko.me/api/v1/lyric/30314784'`
+**cURL** : `curl 'https://<endpoint>/api/v1/lyric/30314784'`
 
 **fetch** :
 ```javascript
-fetch('https://melon.danielko.me/api/v1/lyric/30314784')
+fetch('https://<endpoint>/api/v1/lyric/30314784')
   .then(res => res.json())
   .then(console.log)
 ```
